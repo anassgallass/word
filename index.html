@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Page ludique</title>
+  <style>
+    body {
+      font-family: 'Apple', sans-serif;
+      background-color: #eee;
+      text-align: center;
+    }
+    .prompt-container {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+    }
+    .prompt {
+      font-size: 1.5em;
+      border: none;
+      outline: none;
+      background-color: transparent;
+      color: #333;
+      border-bottom: 2px solid #333;
+      width: 80%;
+      margin-bottom: 1em;
+    }
+    .submit-button {
+      font-size: 1.2em;
+      background-color: #0070c9;
+      color: #fff;
+      border: none;
+      outline: none;
+      padding: 0.75em 1.5em;
+      cursor: pointer;
+    }
+    .word {
+      position: absolute;
+      user-select: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="prompt-container">
+      <form id="form">
+        <input type="text" placeholder="Entrez un mot" id="word-input" class="prompt">
+        <input type="submit" value="Envoyer" class="submit-button">
+      </form>
+    </div>
+    <script>
+      const form = document.getElementById('form');
+      const input = document.getElementById('word-input');
+  
+      function getRandomInt(min, max) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+      }
+  
+      function getRandomColor() {
+        const letters = '0123456789ABCDEF';
+        let color = '#';
+        for (let i = 0; i < 6; i++) {
+          color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+      }
+  
+      function getRandomRotation() {
+        const rotations = [0, 90];
+        return `${rotations[Math.floor(Math.random() * rotations.length)]}deg`;
+      }
+
+      function getRandomFontSize() {
+        return `${getRandomInt(24, 200)}px`;
+      }
+  
+      form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const word = input.value;
+        input.value = '';
+        // On vérifie que le mot n'est pas trop proche du formulaire
+        let x = getRandomInt(0, window.innerWidth);
+        let y = getRandomInt(0, window.innerHeight);
+        while (Math.abs(x - form.offsetLeft) < 100 && Math.abs(y - form.offsetTop) < 100) {
+          x = getRandomInt(0, window.innerWidth);
+          y = getRandomInt(0, window.innerHeight);
+        }
+        const color = getRandomColor();
+        const rotation = getRandomRotation();
+        const fontSize = getRandomFontSize();
+        const element = document.createElement('div');
+        element.classList.add('word');
+        element.style.top = `${y}px`;
+        element.style.left = `${x}px`;
+        element.style.color = color;
+        element.style.fontSize = fontSize;
+        element.style.transform = `rotate(${rotation})`;
+        element.innerText = word;
+        document.body.appendChild(element);
+      });
+    </script>
+  </body>
+  </html>
+  
