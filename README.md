@@ -1,1 +1,1 @@
-https://anassgallass.github.io/color/
+https://anassgallass.github.io/word/
